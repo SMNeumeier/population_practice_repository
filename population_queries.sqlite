@@ -1,0 +1,78 @@
+/*Q3*/
+
+WITH continents AS
+(SELECT countries.continent, COUNT(*)
+FROM countries
+GROUP BY 1)
+
+SELECT *
+FROM continents
+WHERE continent = 'Africa';
+
+/*Q4*/
+
+WITH population AS (
+SELECT countries.continent, SUM(population_years.population) AS 'population'
+FROM countries
+JOIN population_years
+ON countries.id = population_years.country_id
+WHERE population_years.year = 2005
+GROUP BY 1)
+
+SELECT *
+FROM population
+WHERE continent = 'Oceania';
+
+/*Q5*/
+
+WITH population_average AS (
+  SELECT countries.continent, AVG(population_years.population) AS 'avg pop'
+  FROM countries
+  JOIN population_years
+  ON countries.id = population_years.country_id
+  WHERE population_years.year = 2003
+  GROUP BY 1
+)
+
+SELECT *
+FROM population_average
+WHERE continent = 'South America';
+
+/*Q6*/
+
+SELECT countries.name, population_years.population
+FROM countries
+JOIN population_years
+ON countries.id = population_years.country_id
+WHERE population_years.year = 2007
+AND population_years.population IS NOT NULL
+ORDER BY population_years.population
+LIMIT 1;
+
+/*Q7*/
+
+WITH avg_pop AS (
+  SELECT countries.name, AVG(population_years.population) AS 'avg pop'
+  FROM countries
+  JOIN population_years
+  ON countries.id = population_years.country_id
+  GROUP BY 1)
+
+SELECT *
+FROM avg_pop
+WHERE name = 'Poland';
+
+/*Q8*/
+
+SELECT COUNT(*) AS 'the_countries'
+FROM countries
+WHERE name LIKE '%, the';
+
+/*Q9*/
+
+SELECT countries.continent, SUM(population_years.population) AS 'population (mil)'
+FROM countries
+JOIN population_years
+ON countries.id = population_years.country_id
+WHERE population_years.year = 2010
+GROUP BY 1;
